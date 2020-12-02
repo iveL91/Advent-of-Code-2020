@@ -1,6 +1,7 @@
 """
     aoc_01
     https://adventofcode.com/2020/day/1
+    Time: ?
 """
 
 import itertools
