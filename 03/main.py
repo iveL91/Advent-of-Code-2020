@@ -4,54 +4,55 @@
     Time: ca. (21 + 13)min
 """
 
-
+from __future__ import annotations
 from functools import reduce
 from operator import mul
-from typing import Sequence
+from typing import NamedTuple, Sequence
+
+
+class Vector2D(NamedTuple):
+    down: int
+    right: int
 
 
 class Spaceship:
-    space_grid: list[list[int]]
+    space_grid: list[list[bool]]
 
     def __init__(self, position: tuple[int, int] = (0, 0), movement: tuple[int, int] = (1, 3)) -> None:
-        self.position = position
-        self.movement = movement
+        self.position = Vector2D(*position)
+        self.movement = Vector2D(*movement)
+        self.tree_encounters: int = 0
 
     def __call__(self) -> None:
-        self.position = (self.position[0]+self.movement[0],
-                         (self.position[1]+self.movement[1]) % (len(self.space_grid[0])-1))
+        self.tree_encounters += self.space_grid[self.position.down][self.position.right]
+        self.position = Vector2D(self.position.down+self.movement.down,
+                                 (self.position.right+self.movement.right) % len(self.space_grid[0]))
+
+    def fly(self) -> Spaceship:
+        while self.position.down < len(self.space_grid):
+            self()
+        return self
 
 
-def data_input(filename: str = "data") -> list[list[int]]:
+def data_input(filename: str = "data") -> list[list[bool]]:
     with open(filename) as file:
-        return [[0 if point == "." else 1 for point in line] for line in file.readlines()]
-
-
-def tree_encounters(spaceship: Spaceship) -> int:
-    counter: int = 0
-    while spaceship.position[0] < len(spaceship.space_grid):
-        if spaceship.space_grid[spaceship.position[0]][spaceship.position[1]] == 1:
-            counter += 1
-        spaceship()
-    return counter
+        return [[point == "#" for point in line] for line in file.read().splitlines()]
 
 
 def prod(numbers: Sequence[int]) -> int:
     return reduce(mul, numbers, 1)
 
 
+def constructor(movements: list[tuple[int, int]]) -> int:
+    return prod([Spaceship(movement=movement).fly().tree_encounters for movement in movements])
+
+
 def part_1() -> int:
-    spaceship = Spaceship()
-    return tree_encounters(spaceship)
+    return constructor([(1, 3)])
 
 
-def part_2():
-    movements = [(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)]
-    counters: list[int] = []
-    for movement in movements:
-        spaceship = Spaceship(movement=movement)
-        counters.append(tree_encounters(spaceship))
-    return prod(counters)
+def part_2() -> int:
+    return constructor([(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)])
 
 
 def main() -> None:

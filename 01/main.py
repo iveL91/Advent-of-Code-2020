@@ -12,7 +12,7 @@ from typing import Optional, Sequence
 
 def data_input(filename: str = "data") -> list[int]:
     with open(filename) as file:
-        return [int(line) for line in file.readlines()]
+        return [int(line) for line in file.read().splitlines()]
 
 
 def find_numbers_sum_equal_year(data: list[int], n: int, year: int = 2020) -> Optional[tuple[int, ...]]:

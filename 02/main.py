@@ -15,7 +15,7 @@ class PasswordInstruction(NamedTuple):
 
 def data_input(filename: str = "data") -> list[PasswordInstruction]:
     with open(filename) as file:
-        return [password_instruction_transformation(line) for line in file.readlines()]
+        return [password_instruction_transformation(line) for line in file.read().splitlines()]
 
 
 def password_instruction_transformation(password_instruction: str) -> PasswordInstruction:
