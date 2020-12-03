@@ -1,7 +1,7 @@
 """
     aoc_02
     https://adventofcode.com/2020/day/2
-    Time: ca. 23min
+    Time: ca. (18 + 6)min
 """
 
 from typing import NamedTuple

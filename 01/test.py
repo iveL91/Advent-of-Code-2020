@@ -1,7 +1,7 @@
 """test_aoc_01"""
 
 import unittest
-from main import data_input, data_transformation, find_numbers_sum_equal_year, part_1, part_2
+from main import data_input, find_numbers_sum_equal_year, part_1, part_2
 
 
 class TestAoC01(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestAoC01(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-        self.data = data_transformation(data_input("test_data"))
+        self.data = data_input("test_data")
 
     def test_find_numbers_equal_year_length_2(self):
         result = find_numbers_sum_equal_year(self.data, 2)
