@@ -17,7 +17,7 @@ class PassportInformation(ABC):
         self.prop = value
 
     def exists(self) -> bool:
-        return self.prop
+        return bool(self.prop)
 
     @abstractmethod
     def __bool__(self) -> bool:
@@ -57,18 +57,14 @@ class Height(PassportInformation):
     def __bool__(self) -> bool:
         if self.prop is None:
             return False
-        if (unit := self.prop[-2:]) in ["cm", "in"]:
+        if (unit := self.prop[-2:]) in self.units:
             return in_range(int(self.prop[:-2]), *self.ranges[unit])
         return False
 
 
 class HairColor(PassportInformation):
     def __bool__(self) -> bool:
-        if self.prop is None:
-            return False
-        if self.prop[0] != "#":
-            return False
-        if len(self.prop) != 7:
+        if self.prop is None or self.prop[0] != "#" or len(self.prop) != 7:
             return False
         valid_characters = list(str(1234567890)) + list("abcdefgh")
         return all(character in valid_characters for character in self.prop[1:])
