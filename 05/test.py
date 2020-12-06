@@ -1,7 +1,6 @@
 """test_aoc_05"""
 
 import unittest
-from unittest import result
 from main import data_input, find_row, find_column, seat_id, part_1, part_2
 
 
@@ -60,7 +59,7 @@ class TestAoC05(unittest.TestCase):
         result = seat_id("BBFFBBFRLL")
         self.assertEqual(result, 820)
 
-    def test_part_2(self):
+    def test_part_1(self):
         """()"""
         seats = data_input("data")
         result = part_1(seats)
