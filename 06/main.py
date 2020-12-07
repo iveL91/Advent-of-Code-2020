@@ -7,7 +7,7 @@
 from string import ascii_lowercase
 
 
-def data_input(filename: str = "data") -> str:
+def data_input(filename: str = "data") -> list[list[str]]:
     with open(filename) as file:
         return [group_string_to_list(answers) for answers in file.read().split("\n\n")]
 

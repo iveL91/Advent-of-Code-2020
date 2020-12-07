@@ -31,7 +31,7 @@ def valid_old_password(password_instruction: PasswordInstruction) -> bool:
     bounds, letter, password = password_instruction
     lower_bound, upper_bound = bounds
     counter = password.count(letter)
-    return lower_bound <= counter and counter <= upper_bound
+    return lower_bound <= counter <= upper_bound
 
 
 def valid_new_password(password_instruction: PasswordInstruction) -> bool:

@@ -8,7 +8,7 @@ class TestAoC03(unittest.TestCase):
     """()"""
 
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         Spaceship.space_grid = data_input("test_data")
 
     def test_tree_encounters_movement_1_3(self):

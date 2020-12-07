@@ -42,7 +42,7 @@ class TestAoC07_2(unittest.TestCase):
     """()"""
 
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         Bag.bag_rules = data_input("test_data_2")
 
     def test_amount_one_level_single_bag_inside(self):

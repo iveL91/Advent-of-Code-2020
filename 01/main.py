@@ -19,8 +19,7 @@ def find_numbers_sum_equal_year(data: list[int], n: int, year: int = 2020) -> Op
     for numbers in itertools.combinations(data, n):
         if sum(numbers) == year:
             return numbers
-    else:
-        return None
+    return None
 
 
 def prod(numbers: Sequence[int]) -> int:
@@ -30,8 +29,7 @@ def prod(numbers: Sequence[int]) -> int:
 def constructor(data: list[int], n: int) -> int:
     if (found_numbers := find_numbers_sum_equal_year(data, n)) is not None:
         return prod(found_numbers)
-    else:
-        raise ValueError("None compatible numbers found.")
+    raise ValueError("None compatible numbers found.")
 
 
 def part_1(data: list[int]) -> int:
@@ -57,5 +55,5 @@ if __name__ == "__main__":
 
     # import timeit
     # data = data_input()
-    # print(timeit.timeit("part_1(data)", globals=globals(), number=1_000))
+    # print(timeit.timeit("part_1(data)", globals=globals(), number=10_000))
     # print(timeit.timeit("part_2(data)", globals=globals(), number=1_000))

@@ -20,8 +20,8 @@ class PassportInformation(ABC):
         return bool(self.prop)
 
     @abstractmethod
-    def __bool__(self) -> bool:
-        pass
+    def __bool__(self, *args, **kwargs) -> bool:
+        ...
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.prop})"
@@ -116,7 +116,7 @@ def data_input(filename: str = "data") -> list[dict[str, str]]:
         return [string_to_passport(password_string) for password_string in file.read().split("\n\n")]
 
 
-def string_to_passport(string: str) -> dict[str, str]:
+def string_to_passport(string: str) -> Passport:
     passport_list = [property.split(":") for property in string.split()]
     return Passport({property[0]: property[1] for property in passport_list})
 

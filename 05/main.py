@@ -45,9 +45,10 @@ def part_1(seats: list[str]) -> int:
 
 def check_missing_seat_id(seats: list[str]) -> int:
     seat_ids = [seat_id(seat) for seat in seats]
-    for id in range(8*(0+1), 8*(128-1)):  # No first and last row
-        if id not in seat_ids:
-            return id
+    for number in range(8*(0+1), 8*(128-1)):  # No first and last row
+        if number not in seat_ids:
+            return number
+    raise ValueError
 
 
 def part_2(seats: list[str]) -> int:

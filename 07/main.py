@@ -17,14 +17,14 @@ def data_input(filename: str = "data") -> dict[str, list[tuple[str, int]]]:
 
 def line_to_dict(line: str) -> dict[str, list[tuple[str, int]]]:
     pattern_bag = re.compile(r"(\w+ \w+) bags contain")
-    bag = re.search(pattern_bag, line).group(1)
-
-    pattern_inside_bag = re.compile(r"(\d) (\w+ \w+) bag")
-    inside_bags = re.findall(pattern_inside_bag, line)
-    if inside_bags:
-        return {bag: [(inside_bag[1], int(inside_bag[0])) for inside_bag in inside_bags]}
+    if b := re.search(pattern_bag, line):
+        bag = b.group(1)
     else:
-        return {bag: [("", 0)]}
+        bag = ""
+
+    pattern_inside_bag = re.compile(r"(\d+) (\w+ \w+) bag")
+    inside_bags = re.findall(pattern_inside_bag, line)
+    return {bag: [(inside_bag[1], int(inside_bag[0])) for inside_bag in inside_bags]} if inside_bags else {bag: [("", 0)]}
 
 
 class Bag:
@@ -38,21 +38,20 @@ class Bag:
 
     def contains_one(self, possible_bag) -> None:
         if possible_bag not in self.containing and possible_bag not in self.not_containing:
-            if not self.bag_rules[possible_bag][0][0]:
-                self.not_containing.add(possible_bag)
-            else:
-                for inside_bag in self.bag_rules[possible_bag]:
-                    if inside_bag[0] == self.name or inside_bag[0] in self.containing:
-                        self.containing.add(possible_bag)
-                        break
-                    else:
-                        self.contains_one(inside_bag[0])
-
-                    if inside_bag[0] in self.containing:
-                        self.containing.add(possible_bag)
-                        break
-                else:
+            for inside_bag in self.bag_rules[possible_bag]:
+                if not inside_bag[0]:
                     self.not_containing.add(possible_bag)
+                    break
+                if inside_bag[0] == self.name or inside_bag[0] in self.containing:
+                    self.containing.add(possible_bag)
+                    break
+
+                self.contains_one(inside_bag[0])
+                if inside_bag[0] in self.containing:
+                    self.containing.add(possible_bag)
+                    break
+            else:
+                self.not_containing.add(possible_bag)
 
     def contains(self) -> None:
         for bag in self.bag_rules:
