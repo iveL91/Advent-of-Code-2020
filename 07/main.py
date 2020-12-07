@@ -37,21 +37,22 @@ class Bag:
         self.amount: int = 0
 
     def contains_one(self, possible_bag) -> None:
-        for inside_bag in self.bag_rules[possible_bag]:
-            if not inside_bag[0]:
+        if possible_bag not in self.containing and possible_bag not in self.not_containing:
+            if not self.bag_rules[possible_bag][0][0]:
                 self.not_containing.add(possible_bag)
-                break
-            elif inside_bag[0] == self.name or inside_bag[0] in self.containing:
-                self.containing.add(possible_bag)
-                break
             else:
-                self.contains_one(inside_bag[0])
+                for inside_bag in self.bag_rules[possible_bag]:
+                    if inside_bag[0] == self.name or inside_bag[0] in self.containing:
+                        self.containing.add(possible_bag)
+                        break
+                    else:
+                        self.contains_one(inside_bag[0])
 
-            if inside_bag[0] in self.containing:
-                self.containing.add(possible_bag)
-                break
-        else:
-            self.not_containing.add(possible_bag)
+                    if inside_bag[0] in self.containing:
+                        self.containing.add(possible_bag)
+                        break
+                else:
+                    self.not_containing.add(possible_bag)
 
     def contains(self) -> None:
         for bag in self.bag_rules:
@@ -91,6 +92,6 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-    # import timeit
-    # print(timeit.timeit("part_1()", globals=globals(), number=100))
-    # print(timeit.timeit("part_2()", globals=globals(), number=10_000))
+    import timeit
+    print(timeit.timeit("part_1()", globals=globals(), number=10_000))
+    print(timeit.timeit("part_2()", globals=globals(), number=10_000))
