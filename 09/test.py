@@ -8,8 +8,8 @@ class TestAoC09(unittest.TestCase):
     """()"""
 
     @classmethod
-    def setUpClass(self):
-        self.data = data_input("test_data")
+    def setUpClass(cls):
+        cls.data = data_input("test_data")
 
     def test_part_1(self):
         """()"""

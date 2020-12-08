@@ -1,10 +1,10 @@
-"""test_aoc_08"""
+"""test_aoc_10"""
 
 import unittest
 from main import data_input, part_1, part_2
 
 
-class TestAoC08(unittest.TestCase):
+class TestAoC10(unittest.TestCase):
     """()"""
 
     @classmethod
@@ -14,12 +14,12 @@ class TestAoC08(unittest.TestCase):
     def test_part_1(self):
         """()"""
         result = part_1(self.data)
-        self.assertEqual(result, 5)
+        self.assertEqual(result, 0)
 
     def test_part_2(self):
         """()"""
         result = part_2(self.data)
-        self.assertEqual(result, 8)
+        self.assertEqual(result, 0)
 
 
 if __name__ == "__main__":

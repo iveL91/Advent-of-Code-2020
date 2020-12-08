@@ -91,6 +91,6 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-    import timeit
-    print(timeit.timeit("part_1()", globals=globals(), number=10_000))
-    print(timeit.timeit("part_2()", globals=globals(), number=10_000))
+    # import timeit
+    # print(timeit.timeit("part_1()", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2()", globals=globals(), number=10_000))
