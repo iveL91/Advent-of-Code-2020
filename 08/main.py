@@ -46,14 +46,19 @@ class HandheldGameConsole:
                     break
 
 
-def part_1(instructions: list[list[str]]) -> int:
+def constructor(instructions: list[list[str]]) -> HandheldGameConsole:
     HandheldGameConsole.instructions = instructions
     handheld_game_console = HandheldGameConsole()
     handheld_game_console.run()
+    return handheld_game_console
+
+
+def part_1(instructions: list[list[str]]) -> int:
+    handheld_game_console = constructor(instructions)
     return handheld_game_console.acc
 
 
-def part_2(instructions):
+def part_2(instructions: list[list[str]]) -> int:
     for index, instruction in enumerate(instructions):
         if instruction[0] == "nop":
             new_instructions = instructions.copy()
@@ -64,9 +69,7 @@ def part_2(instructions):
         else:
             continue
 
-        HandheldGameConsole.instructions = new_instructions
-        handheld_game_console = HandheldGameConsole()
-        handheld_game_console.run()
+        handheld_game_console = constructor(new_instructions)
 
         if not handheld_game_console.breaker:
             return handheld_game_console.acc
