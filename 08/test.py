@@ -1,7 +1,7 @@
 """test_aoc_08"""
 
 import unittest
-from main import data_input, constructor, part_1, part_2
+from main import data_input, constructor, OperationArgument, part_1, part_2
 
 
 class TestAoC08(unittest.TestCase):
@@ -18,13 +18,13 @@ class TestAoC08(unittest.TestCase):
 
     def test_constructor_infinite_loop(self):
         instructions = self.data.copy()
-        instructions[0] = "jmp +0".split()
+        instructions[0] = OperationArgument(*"jmp +0".split())
         handheld_game_console = constructor(instructions)
         self.assertTrue(handheld_game_console.breaker)
 
     def test_constructor_finite_loop(self):
         instructions = self.data.copy()
-        instructions[-2] = "nop -4".split()
+        instructions[-2] = OperationArgument(*"nop -4".split())
         handheld_game_console = constructor(instructions)
         self.assertFalse(handheld_game_console.breaker)
 
