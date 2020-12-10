@@ -21,10 +21,8 @@ def check_sum_of_pair(lst: list[int], number: int) -> bool:
 
 def constructor(xmas_outputs: list[int], n: int = 25) -> int:
     preamble = xmas_outputs[:n]
-    position: int = n
     for number in xmas_outputs[n:]:
         if check_sum_of_pair(preamble, number):
-            position += 1
             preamble = preamble[1:] + [number]
         else:
             return number
@@ -70,6 +68,6 @@ if __name__ == "__main__":
 
     # import timeit
     # xmas_outputs = data_input("data")
+    # p1 = part_1(xmas_outputs)
     # print(timeit.timeit("part_1(xmas_outputs)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(xmas_outputs, 18272118)",
-    #                     globals=globals(), number=1_000))
+    # print(timeit.timeit("part_2(xmas_outputs, p1)", globals=globals(), number=1_000))
