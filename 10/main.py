@@ -21,13 +21,7 @@ def data_input(filename: str = "data") -> list[Adapter]:
 
 
 def n_jolt_differences(adapters: list[Adapter], n: int) -> int:
-    n_jolt_differences: int = 0
-    for adapter_1, adapter_2 in zip(adapters, adapters[1:]):
-        joltage_rating_difference = adapter_2.joltage_rating - adapter_1.joltage_rating
-        if joltage_rating_difference == n:
-            n_jolt_differences += 1
-
-    return n_jolt_differences
+    return sum(adapter_2.joltage_rating - adapter_1.joltage_rating == n for adapter_1, adapter_2 in zip(adapters, adapters[1:]))
 
 
 def part_1(adapters: list[Adapter]) -> int:

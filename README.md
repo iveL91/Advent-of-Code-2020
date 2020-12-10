@@ -1,5 +1,8 @@
 # Advent-of-Code-2020
 
+## Language:
+Python 3.9
+
 ## Times [s] (Mean value of iterations):
 
 - 01: 0.0014148291777994018 (Iterations: 10.000), 0.02759430037799757 (Iterations: 1.000)

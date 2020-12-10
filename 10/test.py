@@ -16,7 +16,7 @@ class TestAoC10(unittest.TestCase):
         result = n_jolt_differences(self.adapters_1, 1)
         self.assertEqual(result, 7)
 
-    def test_one_jolt_differences_1(self):
+    def test_one_jolt_differences_2(self):
         result = n_jolt_differences(self.adapters_2, 1)
         self.assertEqual(result, 22)
 
