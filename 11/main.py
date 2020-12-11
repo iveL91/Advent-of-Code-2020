@@ -8,13 +8,13 @@ from __future__ import annotations
 from typing import NamedTuple
 
 
-def data_input(filename: str = "data") -> list[list[str]]:
+def data_input(filename: str = "data") -> list[str]:
     with open(filename) as file:
         return data_transformation(file.read())
 
 
-def data_transformation(string: str) -> list[list[str]]:
-    return [list(seat_row) for seat_row in string.splitlines()]
+def data_transformation(string: str) -> list[str]:
+    return string.splitlines()
 
 
 class Rules(NamedTuple):
@@ -26,13 +26,16 @@ class Seats:
     directions: list[tuple[int, int]] = [
         (i, j) for i in range(-1, 2) for j in range(-1, 2) if (i, j) != (0, 0)]
 
-    def __init__(self, seat_layout: list[list[str]], rules: Rules) -> None:
+    def __init__(self, seat_layout: list[str], rules: Rules) -> None:
         self.seat_layout = seat_layout
         self.rules = rules
 
     @property
     def occupied_seats(self) -> int:
         return sum(symbol == "#" for row in self.seat_layout for symbol in row)
+
+    def position_inside_layout(self, position: tuple[int, int]) -> bool:
+        return 0 <= position[0] < len(self.seat_layout) and 0 <= position[1] < len(self.seat_layout[0])
 
     def occupied_seats_around(self, position: tuple[int, int]) -> int:
         sm: int = 0
@@ -41,7 +44,7 @@ class Seats:
             while True:
                 new_position = (
                     new_position[0] + direction[0], new_position[1] + direction[1])
-                if 0 <= new_position[0] < len(self.seat_layout) and 0 <= new_position[1] < len(self.seat_layout[0]):
+                if self.position_inside_layout(new_position):
                     if self.seat_layout[new_position[0]][new_position[1]] == "#":
                         sm += 1
                         break
@@ -54,16 +57,15 @@ class Seats:
         return sm
 
     def round(self) -> Seats:
-        new_seat_layout = [[] for _ in self.seat_layout]
+        new_seat_layout = ["" for _ in self.seat_layout]
         for row_index, seat_row in enumerate(self.seat_layout):
             for column_index, seat in enumerate(seat_row):
                 if seat == "L" and not self.occupied_seats_around((row_index, column_index)):
-                    new_seat_layout[row_index].append("#")
+                    new_seat_layout[row_index] += "#"
                 elif seat == "#" and self.occupied_seats_around((row_index, column_index)) >= self.rules.max_occ_seats_around:
-                    new_seat_layout[row_index].append("L")
+                    new_seat_layout[row_index] += "L"
                 else:
-                    new_seat_layout[row_index].append(
-                        self.seat_layout[row_index][column_index])
+                    new_seat_layout[row_index] += self.seat_layout[row_index][column_index]
         return Seats(new_seat_layout, self.rules)
 
 
@@ -72,17 +74,16 @@ def constructor(seats: Seats) -> int:
         new_seats = seats.round()
         if new_seats.seat_layout == seats.seat_layout:
             break
-        else:
-            seats = new_seats
+        seats = new_seats
     return new_seats.occupied_seats
 
 
 def part_1(seat_layout: list[str]) -> int:
-    return constructor(Seats(seat_layout, Rules(True, 4)))
+    return constructor(Seats(seat_layout, Rules(adjacent=True, max_occ_seats_around=4)))
 
 
-def part_2(seat_layout):
-    return constructor(Seats(seat_layout, Rules(False, 5)))
+def part_2(seat_layout: list[str]) -> int:
+    return constructor(Seats(seat_layout, Rules(adjacent=False, max_occ_seats_around=5)))
 
 
 def main() -> None:
@@ -97,3 +98,8 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+    # import timeit
+    # layout = data_input("data")
+    # print(timeit.timeit("part_1(layout)", globals=globals(), number=1))
+    # print(timeit.timeit("part_2(layout)", globals=globals(), number=1))
