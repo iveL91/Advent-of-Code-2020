@@ -111,7 +111,7 @@ class Passport:
         return all(var for var in vars(self).values())
 
 
-def data_input(filename: str = "data") -> list[dict[str, str]]:
+def data_input(filename: str = "data") -> list[Passport]:
     with open(filename) as file:
         return [string_to_passport(password_string) for password_string in file.read().split("\n\n")]
 
@@ -121,11 +121,11 @@ def string_to_passport(string: str) -> Passport:
     return Passport({property[0]: property[1] for property in passport_list})
 
 
-def part_1(passports) -> int:
+def part_1(passports: list[Passport]) -> int:
     return sum(passport.exists() for passport in passports)
 
 
-def part_2(passports) -> int:
+def part_2(passports: list[Passport]) -> int:
     return sum(bool(passport) for passport in passports)
 
 

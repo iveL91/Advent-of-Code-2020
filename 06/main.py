@@ -24,11 +24,11 @@ def same_letters_in_group(group_answers: str) -> int:
     return len(set(ascii_lowercase).intersection(*[set(answer) for answer in group_answers]))
 
 
-def part_1(answers):
+def part_1(answers: list[list[str]]) -> int:
     return sum(different_letters_in_group(group_answers) for group_answers in answers)
 
 
-def part_2(answers):
+def part_2(answers: list[list[str]]) -> int:
     return sum(same_letters_in_group(group_answers) for group_answers in answers)
 
 

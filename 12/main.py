@@ -53,7 +53,7 @@ class Ship:
             direction = self.new_direction(navigation_instruction, direction)
         return position, direction
 
-    def move_forward(self, steps, direction) -> None:
+    def move_forward(self, steps: int, direction: tuple[int, int]) -> None:
         self.position = tuple_add(
             self.position, tuple_scalar_mul(steps, direction))
 

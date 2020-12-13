@@ -13,7 +13,7 @@ class OperationArgument(NamedTuple):
     argument: str
 
 
-def data_input(filename: str = "data") -> list[list[str]]:
+def data_input(filename: str = "data") -> list[OperationArgument]:
     with open(filename) as file:
         return [OperationArgument(*line.split()) for line in file.read().splitlines()]
 
