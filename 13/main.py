@@ -43,7 +43,7 @@ def part_2(buses: list[Bus]) -> int:
     x: int = 0
     while True:
         for index, bus in enumerate(buses[new_index:], new_index):
-            if not (x+bus.offset) / bus.id - (x+bus.offset) // bus.id:
+            if ((x+bus.offset) / bus.id).is_integer():
                 step = lcm(step, bus.id)
                 new_index = index
             else:
