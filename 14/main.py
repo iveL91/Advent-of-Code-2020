@@ -4,7 +4,7 @@
     Time: ca. (38 + 46)min
 """
 
-from typing import Callable, NewType, Union
+from __future__ import annotations
 
 
 def data_input(filename: str = "data") -> list[list[str]]:
@@ -12,133 +12,80 @@ def data_input(filename: str = "data") -> list[list[str]]:
         return [line.split(" = ") for line in file.read().splitlines()]
 
 
-# u_int_b36 = NewType('u_int_b36', str)
+class uint_b36(str):
+    overwrite_instructions: dict[str, bool]
 
-# class uint_b36(str):
-#     def to_int(self) -> int:
-#         return int(self, 2)
-            
+    def __int__(self) -> int:
+        return int(self, 2)
 
-# class BitmaskSystem:
-#     def __init__(self) -> None:
-#         self.mask: uint_b36 = uint_b36("")
-#         self.mem: dict[uint_b36, uint_b36] = {}
+    def __new__(cls, bin_string: str):
+        if len(bin_string) > 36:
+            raise ValueError
+        string = "0" * (36 - len(bin_string)) + bin_string
+        return super(uint_b36, cls).__new__(cls, string)
 
-#     def update(self, instruction) -> None:
-#         if instruction[0] == "mask":
-#             self.mask = instruction[1]
-#         else:
-#             pass
-            
-
+    def __add__(self, other: uint_b36) -> uint_b36:  # overlap
+        new_string = ""
+        for mask_digit, string_value in zip(self, other):
+            new_string += mask_digit if self.overwrite_instructions[mask_digit] else string_value
+        return uint_b36(new_string)
 
 
-def bin_36_to_int(bin_36_string: str) -> int:
-    return int(bin_36_string, 2)
+def int_to_uint_b36(integer: int) -> uint_b36:
+    return uint_b36(bin(integer)[2:])
 
 
-def int_to_bin_36(integer: int) -> str:
-    return "0" * (36 - len(bin(integer)[2:])) + bin(integer)[2:]
+def floating_address_to_addresses(floating_address: uint_b36) -> list[uint_b36]:
+    lst: list[str] = [floating_address]
+    for char in floating_address:
+        if char == "X":
+            lst = [string.replace(char, str(value), 1)
+                   for string in lst for value in [0, 1]]
+    return [uint_b36(string) for string in lst]
 
 
-def mask_value_overlap(mask: str, value: int) -> str:
-    value_36 = int_to_bin_36(value)
-    result = ""
-    for digit_mask, digit_value in zip(mask, value_36):
-        if digit_mask == "X":
-            result += digit_value
-        else:
-            result += digit_mask
-    return result
-
-
-def determine_positions(mask: str, position_instruction: str, version: int) -> list[int]:
+def determine_positions(mask: uint_b36, position_instruction: str, version: int) -> list[uint_b36]:
     if version == 1:
-        return [int_to_bin_36(int(position_instruction[4:-1]))]
+        return [int_to_uint_b36(int(position_instruction[4:-1]))]
 
-    floating_position = memory_address_decoder(
-        mask, int(position_instruction[4:-1]))
-    return [bin_36_to_int(position_str)
-            for position_str in floating_address_to_addresses(floating_position)]
+    floating_position = mask + int_to_uint_b36(int(position_instruction[4:-1]))
+    return floating_address_to_addresses(floating_position)
 
 
-def new(mask: str, position_instruction: str) -> list[int]:
-    floating_position = memory_address_decoder(
-        mask, int(position_instruction[4:-1]))
-    return [bin_36_to_int(position_str)
-            for position_str in floating_address_to_addresses(floating_position)]
-
-
-def determine_mem(data: list[list[str]], version: int = 1) -> dict[int, str]:
-    mem: dict[int, str] = {}
-    mask = ""
+def determine_mem(data: list[list[str]], version: int = 1) -> dict[uint_b36, uint_b36]:
+    mem: dict[uint_b36, uint_b36] = {}
+    mask = uint_b36("")
     for lst in data:
         if lst[0] == "mask":
-            mask = lst[1]
+            mask = uint_b36(lst[1])
             continue
 
         position_instruction, value_str = lst
-        value = int(value_str)
+        value = uint_b36(bin(int(value_str))[2:])
         positions = determine_positions(mask, position_instruction, version)
 
         for position in positions:
-            mem[position] = mask_value_overlap(mask, value)
+            mem[position] = mask + value if version == 1 else value
     return mem
 
 
-def memory_address_decoder(mask: str, value: int) -> str:
-    value_36 = int_to_bin_36(value)
-    result = ""
-    for digit_mask, digit_value in zip(mask, value_36):
-        if digit_mask == "0":
-            result += digit_value
-        else:
-            result += digit_mask
-    return result
-
-
-def replace_char_in_str(string: str, position: int, value: Union[str, int]) -> str:
-    return string[:position] + str(value) + string[position+1:]
-
-
-def floating_address_to_addresses(floating_address: str) -> list[str]:
-    lst = [floating_address]
-    for position, char in enumerate(floating_address):
-        if char == "X":
-            lst = [replace_char_in_str(string, position, value)
-                   for string in lst for value in [0, 1]]
-    return lst
-
-
-def determine_new_mem(data: list[list[str]]) -> dict[int, str]:
-    # return determine_mem(data, 2)
-    mem: dict[int, str] = {}
-    mask: str = ""
-    for lst in data:
-        if lst[0] == "mask":
-            mask = lst[1]
-            continue
-
-        position_instruction, value_str = lst
-        value = int(value_str)
-        positions = determine_positions(mask, position_instruction, 2)
-
-        for position_str in positions:
-            mem[position_str] = int_to_bin_36(value)
-    return mem
-
-
-def constructor(data: list[list[str]], det_mem: Callable[[list[list[str]]], dict[int, str]]) -> int:
-    mem = det_mem(data)
-    return sum(bin_36_to_int(value) for value in mem.values())
+def constructor(data: list[list[str]], version: int) -> int:
+    mem = determine_mem(data, version)
+    return sum(int(value) for value in mem.values())
 
 
 def part_1(data: list[list[str]]) -> int:
-    return constructor(data, determine_mem)
+    uint_b36.overwrite_instructions = {"0": True,
+                                       "1": True,
+                                       "X": False}
+    return constructor(data, 1)
 
 
 def part_2(data: list[list[str]]) -> int:
-    return constructor(data, determine_new_mem)
+    uint_b36.overwrite_instructions = {"0": False,
+                                       "1": True,
+                                       "X": True}
+    return constructor(data, 2)
 
 
 def main() -> None:
