@@ -1,15 +1,15 @@
-"""test_aoc_16"""
+"""test_aoc_18"""
 
 import unittest
 from main import data_input, part_1, part_2
 
 
-class TestAoC16(unittest.TestCase):
+class TestAoC18(unittest.TestCase):
     """()"""
 
     @classmethod
     def setUpClass(cls):
-        cls.data = data_input("test_data_1")
+        cls.data = data_input("test_data")
 
     def test_part_1(self):
         """()"""
