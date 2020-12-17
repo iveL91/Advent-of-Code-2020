@@ -9,99 +9,100 @@ import itertools
 Point = tuple[int, ...]
 
 
+class PocketDimension:
+    def __init__(self, grid_dict: dict[Point, bool]):
+        self.grid = grid_dict
+
+    @property
+    def active_cubes(self) -> int:
+        return sum(state for state in self.grid.values())
+
+    def extend(self) -> None:
+        dimensions: int = 0
+        for point in self.grid:
+            dimensions = len(point)
+            break
+
+        mins_maxs = []
+        for i in range(dimensions):
+            values = [point[i] for point in self.grid]
+            mins_maxs.append(range(min(values)-1, max(values)+2))
+
+        self.grid = {tup: (self.grid[tup] if tup in self.grid else False)
+                     for tup in itertools.product(*mins_maxs)}
+
+    @staticmethod
+    def determine_neighbors(point: Point) -> list[Point]:
+        dimensions = len(point)
+        result: list[Point] = [tuple_add(point, delta) for delta in itertools.product(
+            range(-1, 2), repeat=dimensions)]
+        result.remove(point)
+        return result
+
+    def activate(self, point: Point) -> bool:
+        neighbors = self.determine_neighbors(point)
+        active_points: int = sum(
+            self.grid[neighbor] for neighbor in neighbors if neighbor in self.grid)
+
+        if self.grid[point]:
+            return active_points in (2, 3)
+        return active_points == 3
+
+    def __call__(self) -> None:
+        self.grid = {point: self.activate(point) for point in self.grid}
+
+
 def tuple_add(tuple_1: Point, tuple_2: Point) -> Point:
     return tuple(ele1 + ele2 for ele1, ele2 in zip(tuple_1, tuple_2))
 
 
-def data_input(filename: str, dimensions: int) -> dict[Point, bool]:
+def data_input(filename: str, dimensions: int) -> PocketDimension:
     with open(filename) as file:
         return data_transformation(file.read(), dimensions)
 
 
-def data_transformation(string: str, dimensions: int) -> dict[Point, bool]:
+def data_transformation(string: str, dimensions: int) -> PocketDimension:
     lines = string.splitlines()
 
-    result = {}
+    grid_dict = {}
     for line_index, line in enumerate(lines):
         for column_index, char in enumerate(line):
             point = tuple([column_index, line_index] + [0] * (dimensions - 2))
-            result[point] = char == "#"
+            grid_dict[point] = char == "#"
 
-    return result
-
-
-def determine_neighbors(point: Point) -> list[Point]:
-    dimensions = len(point)
-    result: list[Point] = [tuple_add(point, delta) for delta in itertools.product(
-        range(-1, 2), repeat=dimensions)]
-    result.remove(point)
-    return result
+    return PocketDimension(grid_dict)
 
 
-def activate(point: Point, grid: dict[Point, bool]) -> bool:
-    neighbors = determine_neighbors(point)
-    active_points: int = sum(
-        grid[neighbor] for neighbor in neighbors if neighbor in grid)
-
-    if grid[point]:
-        return active_points in (2, 3)
-    return active_points == 3
-
-
-def cycle(grid: dict[Point, bool]) -> dict[Point, bool]:
-    return {point: activate(point, grid) for point in grid}
-
-
-def active_cubes(grid: dict[Point, bool]) -> int:
-    return sum(state for state in grid.values())
-
-
-def extend_grid(grid: dict[Point, bool]) -> dict[Point, bool]:
-    dimensions: int = 0
-    for point in grid:
-        dimensions = len(point)
-        break
-
-    mins_maxs = []
-    for i in range(dimensions):
-        values = [point[i] for point in grid]
-        mins_maxs.append(range(min(values)-1, max(values)+2))
-
-    extended_grid_empty: dict[Point, bool] = {
-        tup: False for tup in itertools.product(*mins_maxs)}
-    return extended_grid_empty | grid
-
-
-def constructor(grid: dict[Point, bool], cycles: int = 6) -> int:
+def constructor(pocket_dimension: PocketDimension, cycles: int = 6) -> int:
     for _ in range(cycles):
-        grid = extend_grid(grid)
-        grid = cycle(grid)
-    return active_cubes(grid)
+        pocket_dimension.extend()
+        pocket_dimension()
+    return pocket_dimension.active_cubes
 
 
-def part_1(grid: dict[Point, bool]) -> int:
+def part_1(grid: PocketDimension) -> int:
     return constructor(grid)
 
 
-def part_2(grid: dict[Point, bool]) -> int:
+def part_2(grid: PocketDimension) -> int:
     return constructor(grid)
 
 
 def main() -> None:
-    grid = data_input("data", 3)
-    p1 = part_1(grid)
+    pocket_dimension = data_input("data", 3)
+    p1 = part_1(pocket_dimension)
     print(f"Part 1: {p1} is {p1 == 391}")
 
-    grid = data_input("data", 4)
-    p2 = part_2(grid)
+    pocket_dimension = data_input("data", 4)
+    p2 = part_2(pocket_dimension)
     print(f"Part 2: {p2} is {p2 == 2264}")
 
 
 if __name__ == "__main__":
     main()
 
-    import timeit
-    grid = data_input("data", 3)
-    print(timeit.timeit("part_1(grid)", globals=globals(), number=100))
-    grid = data_input("data", 4)
-    print(timeit.timeit("part_2(grid)", globals=globals(), number=1))
+    # import timeit
+    # pocket_dimension = data_input("data", 3)
+    # print(timeit.timeit("part_1(pocket_dimension)", globals=globals(), number=100))
+    # pocket_dimension = data_input("data", 4)
+    # print(timeit.timeit("part_2(pocket_dimension)", globals=globals(), number=1))
