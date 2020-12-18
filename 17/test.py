@@ -4,13 +4,13 @@ import unittest
 from main import data_input, part_1, part_2
 
 
-class TestAoC17_1(unittest.TestCase):
+class TestAoC17(unittest.TestCase):
     """()"""
 
     @classmethod
     def setUpClass(cls):
-        cls.test_data = data_input("test_data", 3)
-        cls.data = data_input("data", 3)
+        cls.test_data = data_input("test_data")
+        cls.data = data_input("data")
 
     def test_part_1_1(self):
         """()"""
@@ -21,15 +21,6 @@ class TestAoC17_1(unittest.TestCase):
         """()"""
         result = part_1(self.data)
         self.assertEqual(result, 391)
-
-
-class TestAoC17_2(unittest.TestCase):
-    """()"""
-
-    @classmethod
-    def setUpClass(cls):
-        cls.test_data = data_input("test_data", 4)
-        cls.data = data_input("data", 4)
 
     def test_part_2_1(self):
         """()"""

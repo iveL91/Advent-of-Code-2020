@@ -56,44 +56,48 @@ def tuple_add(tuple_1: Point, tuple_2: Point) -> Point:
     return tuple(ele1 + ele2 for ele1, ele2 in zip(tuple_1, tuple_2))
 
 
-def data_input(filename: str, dimensions: int) -> PocketDimension:
+def data_input(filename: str) -> dict[Point, bool]:
     with open(filename) as file:
-        return data_transformation(file.read(), dimensions)
+        return data_transformation(file.read())
 
 
-def data_transformation(string: str, dimensions: int) -> PocketDimension:
+def data_transformation(string: str) -> dict[Point, bool]:
     lines = string.splitlines()
 
     grid_dict = {}
     for line_index, line in enumerate(lines):
         for column_index, char in enumerate(line):
-            point = tuple([column_index, line_index] + [0] * (dimensions - 2))
+            point = tuple([column_index, line_index])
             grid_dict[point] = char == "#"
 
-    return PocketDimension(grid_dict)
+    return grid_dict
 
 
-def constructor(pocket_dimension: PocketDimension, cycles: int = 6) -> int:
+def grid_transformation(grid_dict: dict[Point, bool], dimensions: int) -> PocketDimension:
+    return PocketDimension({tuple(list(point) + [0] * (dimensions - 2)): value for point, value in grid_dict.items()})
+
+
+def constructor(grid_dict: dict[Point, bool], dimensions: int, cycles: int = 6) -> int:
+    pocket_dimension = grid_transformation(grid_dict, dimensions)
     for _ in range(cycles):
         pocket_dimension.extend()
         pocket_dimension()
     return pocket_dimension.active_cubes
 
 
-def part_1(grid: PocketDimension) -> int:
-    return constructor(grid)
+def part_1(grid_dict: dict[Point, bool]) -> int:
+    return constructor(grid_dict, 3)
 
 
-def part_2(grid: PocketDimension) -> int:
-    return constructor(grid)
+def part_2(grid_dict: dict[Point, bool]) -> int:
+    return constructor(grid_dict, 4)
 
 
 def main() -> None:
-    pocket_dimension = data_input("data", 3)
+    pocket_dimension = data_input("data")
     p1 = part_1(pocket_dimension)
     print(f"Part 1: {p1} is {p1 == 391}")
 
-    pocket_dimension = data_input("data", 4)
     p2 = part_2(pocket_dimension)
     print(f"Part 2: {p2} is {p2 == 2264}")
 
@@ -102,7 +106,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # pocket_dimension = data_input("data", 3)
-    # print(timeit.timeit("part_1(pocket_dimension)", globals=globals(), number=100))
-    # pocket_dimension = data_input("data", 4)
-    # print(timeit.timeit("part_2(pocket_dimension)", globals=globals(), number=1))
+    # grid_dict = data_input("data")
+    # print(timeit.timeit("part_1(grid_dict)", globals=globals(), number=100))
+    # print(timeit.timeit("part_2(grid_dict)", globals=globals(), number=1))
