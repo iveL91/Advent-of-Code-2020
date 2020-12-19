@@ -1,6 +1,6 @@
 """
-    aoc_20
-    https://adventofcode.com/2020/day/20
+    aoc_21
+    https://adventofcode.com/2020/day/21
     Time: ca. ( + )min
 """
 

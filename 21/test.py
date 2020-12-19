@@ -1,10 +1,10 @@
-"""test_aoc_20"""
+"""test_aoc_21"""
 
 import unittest
 from main import data_input, part_1, part_2
 
 
-class TestAoC20(unittest.TestCase):
+class TestAoC21(unittest.TestCase):
     """()"""
 
     @classmethod
