@@ -12,15 +12,26 @@ class TestAoC21(unittest.TestCase):
         cls.test_data = data_input("test_data")
         cls.data = data_input("data")
 
-    def test_part_1(self):
+    def test_part_1_1(self):
+        """()"""
+        result = part_1(self.test_data)
+        self.assertEqual(result, 5)
+
+    def test_part_1_2(self):
         """()"""
         result = part_1(self.data)
-        self.assertEqual(result, 0)
+        self.assertEqual(result, 1930)
 
-    def test_part_2(self):
+    def test_part_2_1(self):
+        """()"""
+        result = part_2(self.test_data)
+        self.assertEqual(result, "mxmxvkd,sqjhc,fvjkl")
+
+    def test_part_2_2(self):
         """()"""
         result = part_2(self.data)
-        self.assertEqual(result, 0)
+        self.assertEqual(
+            result, "spcqmzfg,rpf,dzqlq,pflk,bltrbvz,xbdh,spql,bltzkxx")
 
 
 if __name__ == "__main__":
