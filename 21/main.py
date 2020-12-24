@@ -30,7 +30,7 @@ def determine_none_allergens(foods: list[Food], all_ingredients: set[str], all_a
     for ingredient in all_ingredients:
         for allergen in all_allergens:
             for food in foods:
-                if allergen in food.allergens and ingredient not in food[0]:
+                if allergen in food.allergens and ingredient not in food.ingredients:
                     break
             else:
                 break
