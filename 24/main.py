@@ -9,7 +9,7 @@ from typing import DefaultDict
 
 Instruction = list[tuple[int, int]]
 
-DIRECTIONS_DICT: dict[str, tuple[int, int]] = {
+DIRECTIONS: dict[str, tuple[int, int]] = {
     "e": (0, 2),
     "se": (-1, 1),
     "sw": (-1, -1),
@@ -28,10 +28,10 @@ def data_transformation(line: str) -> Instruction:
     instruction: Instruction = []
     while line:
         if line[0] in ["n", "s"]:
-            instruction.append(DIRECTIONS_DICT[line[:2]])
+            instruction.append(DIRECTIONS[line[:2]])
             line = line[2:]
         else:
-            instruction.append(DIRECTIONS_DICT[line[0]])
+            instruction.append(DIRECTIONS[line[0]])
             line = line[1:]
     return instruction
 
@@ -61,14 +61,13 @@ def part_1(instructions: list[Instruction]) -> int:
 
 def determine_amount_neighbors(tile_position: tuple[int, int], extended_tiles: dict[tuple[int, int], bool]) -> int:
     neighbor_values = [extended_tiles[tuple_add(
-        tile_position, direction)] for direction in DIRECTIONS_DICT.values()]
+        tile_position, direction)] for direction in DIRECTIONS.values()]
     return sum(neighbor_values)
 
 
 def extend_grid(tiles: dict[tuple[int, int], bool]) -> dict[tuple[int, int], bool]:
     additional_tiles = {tuple_add(
-        tile_position, direction): False for tile_position in tiles for direction in DIRECTIONS_DICT.values()}
-
+        tile_position, direction): False for tile_position in tiles for direction in DIRECTIONS.values()}
     return additional_tiles | tiles
 
 
