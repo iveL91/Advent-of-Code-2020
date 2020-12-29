@@ -115,7 +115,8 @@ def check_for_neighborhood(tile_1: Tile, tile_2: Tile) -> bool:
 
 def position_tiles(tiles: list[Tile]) -> dict[tuple[int, int], Tile]:
     flips: list[Callable[[Tile], Tile]] = [Tile.identity,
-                                           Tile.flip_horizontally, Tile.flip_vertically]
+                                           Tile.flip_horizontally,
+                                           Tile.flip_vertically]
     rotations: list[Callable[[Tile], Tile]] = [
         repeated(Tile.rotate_90, n) for n in range(4)]
 
@@ -143,9 +144,8 @@ def grid_tiles_size(grid_positions: Iterable[tuple[int, int]]) -> tuple[tuple[in
 def part_1(tiles: list[Tile]) -> int:
     grid_positions_tiles = position_tiles(tiles)
     mins_maxs = grid_tiles_size(grid_positions_tiles.keys())
-    pro = prod(grid_positions_tiles[(
+    return prod(grid_positions_tiles[(
         ele1, ele2)].number for ele1, ele2 in itertools.product(*mins_maxs))
-    return pro
 
 
 def create_image(grid_dict: dict[tuple[int, int], Grid]) -> Grid:

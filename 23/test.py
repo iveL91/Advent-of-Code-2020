@@ -14,10 +14,15 @@ class TestAoC23(unittest.TestCase):
 
     def test_part_1_1(self):
         """()"""
+        result = part_1(self.test_data, 10)
+        self.assertEqual(result, 92658374)
+
+    def test_part_1_2(self):
+        """()"""
         result = part_1(self.test_data)
         self.assertEqual(result, 67384529)
 
-    def test_part_1_2(self):
+    def test_part_1_3(self):
         """()"""
         result = part_1(self.data)
         self.assertEqual(result, 97632548)
