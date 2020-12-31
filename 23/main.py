@@ -1,41 +1,52 @@
 """
     aoc_23
     https://adventofcode.com/2020/day/23
-    Time: ca. (48 + )min
+    Time: ca. (48 + /)min
 """
-
-import collections
 
 
 class CupGame:
     def __init__(self, cups: list[int], length: int) -> None:
-        self.cups = collections.deque(cups + list(range(10, length)), length)
+        cups = cups + list(range(10, length+1))
+        self.cups_dict = dict(zip(cups, cups[1:]+[cups[0]]))
+        self.position = cups[0]
 
-    @property
-    def destination_cup(self) -> int:
-        not_available_cups = [self.cups[i] for i in range(4)]
-        result = self.cups[0]
-        while result in not_available_cups:
-            result -= 1
-            if not result:
-                result = len(self.cups)
-        return result
+    def determine_destination_cup(self, not_available_cups: list[int]) -> int:
+        destination_cup = self.position
+        while destination_cup in not_available_cups:
+            destination_cup -= 1
+            if not destination_cup:
+                destination_cup = len(self.cups_dict)
+        return destination_cup
 
     def move(self) -> None:
-        destination_cup = self.destination_cup
-        self.cups.rotate(-1)
-        destination_cup_index = self.cups.index(destination_cup)
-        for _ in range(3):
-            self.cups.insert(destination_cup_index, self.cups.popleft())
+        first_pick_up = self.cups_dict[self.position]
+        second_pick_up = self.cups_dict[first_pick_up]
+        last_pick_up = self.cups_dict[second_pick_up]
+        after_pick_ups = self.cups_dict[last_pick_up]
+        destination_cup = self.determine_destination_cup(
+            [self.position, first_pick_up, second_pick_up, last_pick_up])
+        after_destination_cup = self.cups_dict[destination_cup]
 
-    def run(self, moves: int = 100):
+        self.cups_dict[destination_cup] = first_pick_up
+        self.cups_dict[last_pick_up] = after_destination_cup
+        self.cups_dict[self.position] = after_pick_ups
+        self.position = after_pick_ups
+
+    def run(self, moves: int) -> None:
         for _ in range(moves):
             self.move()
 
     def labels_after_1(self) -> int:
-        index_1 = self.cups.index(1)
-        self.cups.rotate(-index_1)
-        return int("".join(str(number) for number in list(self.cups)[1:]))
+        after = self.cups_dict[1]
+        labels = str(after)
+        for _ in range(7):
+            after = self.cups_dict[after]
+            labels += str(after)
+        return int(labels)
+
+    def two_cups_after_1(self) -> tuple[int, int]:
+        return self.cups_dict[1], self.cups_dict[self.cups_dict[1]]
 
 
 def data_input(filename: str) -> list[int]:
@@ -43,14 +54,23 @@ def data_input(filename: str) -> list[int]:
         return [int(number) for number in file.read()]
 
 
-def part_1(cups: list[int], runs: int = 100) -> int:
-    cup_game = CupGame(cups, 10)
+def constructor(cups: list[int], runs: int, length: int = 9) -> CupGame:
+    cup_game = CupGame(cups, length)
     cup_game.run(runs)
+    return cup_game
+
+
+def part_1(cups: list[int], runs: int = 100) -> int:
+    cup_game = constructor(cups, runs)
     return cup_game.labels_after_1()
 
 
 def part_2(cups: list[int]) -> int:
-    pass
+    length: int = 1_000_000
+    runs: int = 10_000_000
+    cup_game = constructor(cups, runs, length)
+    cup_1, cup_2 = cup_game.two_cups_after_1()
+    return cup_1 * cup_2
 
 
 def main() -> None:
@@ -59,8 +79,8 @@ def main() -> None:
     p1 = part_1(cups)
     print(f"Part 1: {p1} is {p1 == 97632548}")
 
-    # p2 = part_2(cups)
-    # print(f"Part 2: {p2} is {p2 == 0}")
+    p2 = part_2(cups)
+    print(f"Part 2: {p2} is {p2 == 412990492266}")
 
 
 if __name__ == "__main__":
