@@ -62,6 +62,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # data = data_input()
-    # print(timeit.timeit("part_1(data)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(data)", globals=globals(), number=10_000))
+    # PASSWORD_INSTRUCTIONS = data_input()
+    # print(timeit.timeit("part_1(PASSWORD_INSTRUCTIONS)", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2(PASSWORD_INSTRUCTIONS)", globals=globals(), number=10_000))

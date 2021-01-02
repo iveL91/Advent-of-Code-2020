@@ -128,6 +128,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # instructions = data_input("data")
-    # print(timeit.timeit("part_1(instructions)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(instructions)", globals=globals(), number=1_000))
+    # INSTRUCTIONS = data_input("data")
+    # print(timeit.timeit("part_1(INSTRUCTIONS)", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2(INSTRUCTIONS)", globals=globals(), number=1_000))

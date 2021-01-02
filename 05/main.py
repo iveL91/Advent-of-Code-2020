@@ -69,6 +69,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # seats = data_input("data")
-    # print(timeit.timeit("part_1(seats)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(seats)", globals=globals(), number=10_000))
+    # SEATS = data_input("data")
+    # print(timeit.timeit("part_1(SEATS)", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2(SEATS)", globals=globals(), number=10_000))

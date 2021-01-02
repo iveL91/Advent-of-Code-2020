@@ -73,7 +73,7 @@ def data_transformation(string: str) -> tuple[Deck, Deck]:
 
 def deck_score(deck: Deck) -> int:
     return sum(deck_number * value for deck_number,
-               value in zip(deck[::-1], range(1, len(deck)+1)))
+               value in zip(reversed(deck), range(1, len(deck)+1)))
 
 
 def part_1(decks: tuple[Deck, Deck]) -> int:

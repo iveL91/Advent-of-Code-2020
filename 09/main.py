@@ -67,7 +67,7 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # xmas_outputs = data_input("data")
-    # p1 = part_1(xmas_outputs)
-    # print(timeit.timeit("part_1(xmas_outputs)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(xmas_outputs, p1)", globals=globals(), number=1_000))
+    # XMAS_OUTPUTS = data_input("data")
+    # p1 = part_1(XMAS_OUTPUTS)
+    # print(timeit.timeit("part_1(XMAS_OUTPUTS)", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2(XMAS_OUTPUTS, p1)", globals=globals(), number=1_000))

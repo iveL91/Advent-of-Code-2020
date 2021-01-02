@@ -92,5 +92,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
+    # Bag.bag_rules = data_input("data")
     # print(timeit.timeit("part_1()", globals=globals(), number=10_000))
     # print(timeit.timeit("part_2()", globals=globals(), number=10_000))

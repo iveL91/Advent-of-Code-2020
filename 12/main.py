@@ -131,6 +131,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # navigation_instructions = data_input("data")
-    # print(timeit.timeit("part_1(navigation_instructions)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(navigation_instructions)", globals=globals(), number=10_000))
+    # NAVIGATION_INSTRUCTIONS = data_input("data")
+    # print(timeit.timeit("part_1(NAVIGATION_INSTRUCTIONS)", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2(NAVIGATION_INSTRUCTIONS)", globals=globals(), number=10_000))

@@ -9,10 +9,10 @@ class CupGame:
     def __init__(self, cups: list[int], length: int) -> None:
         cups = cups + list(range(10, length+1))
         self.cups_dict = dict(zip(cups, cups[1:]+[cups[0]]))
-        self.position = cups[0]
+        self.current_cup = cups[0]
 
     def determine_destination_cup(self, not_available_cups: list[int]) -> int:
-        destination_cup = self.position
+        destination_cup = self.current_cup
         while destination_cup in not_available_cups:
             destination_cup -= 1
             if not destination_cup:
@@ -20,18 +20,18 @@ class CupGame:
         return destination_cup
 
     def move(self) -> None:
-        first_pick_up = self.cups_dict[self.position]
+        first_pick_up = self.cups_dict[self.current_cup]
         second_pick_up = self.cups_dict[first_pick_up]
         last_pick_up = self.cups_dict[second_pick_up]
         after_pick_ups = self.cups_dict[last_pick_up]
         destination_cup = self.determine_destination_cup(
-            [self.position, first_pick_up, second_pick_up, last_pick_up])
+            [self.current_cup, first_pick_up, second_pick_up, last_pick_up])
         after_destination_cup = self.cups_dict[destination_cup]
 
         self.cups_dict[destination_cup] = first_pick_up
         self.cups_dict[last_pick_up] = after_destination_cup
-        self.cups_dict[self.position] = after_pick_ups
-        self.position = after_pick_ups
+        self.cups_dict[self.current_cup] = after_pick_ups
+        self.current_cup = after_pick_ups
 
     def run(self, moves: int) -> None:
         for _ in range(moves):

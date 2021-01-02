@@ -106,6 +106,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # grid_dict = data_input("data")
-    # print(timeit.timeit("part_1(grid_dict)", globals=globals(), number=100))
-    # print(timeit.timeit("part_2(grid_dict)", globals=globals(), number=1))
+    # POCKET_DIMENSION = data_input("data")
+    # print(timeit.timeit("part_1(POCKET_DIMENSION)", globals=globals(), number=100))
+    # print(timeit.timeit("part_2(POCKET_DIMENSION)", globals=globals(), number=1))

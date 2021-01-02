@@ -31,7 +31,7 @@ def part_1(adapters: list[Adapter]) -> int:
 def part_2(adapters: list[Adapter]) -> int:
     arrangements_dct: dict[Adapter, int] = {adapters[-2]: 1}
 
-    for adapter in adapters[:-2][::-1]:
+    for adapter in reversed(adapters[:-2]):
         adapter_arrangements: int = 0
         for jolt_difference in range(1, 4):
             if (new_adapter := Adapter(adapter.joltage_rating + jolt_difference)) in adapters:
@@ -55,6 +55,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # adapters = data_input("data")
-    # print(timeit.timeit("part_1(adapters)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(adapters)", globals=globals(), number=10_000))
+    # ADAPTERS = data_input("data")
+    # print(timeit.timeit("part_1(ADAPTERS)", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2(ADAPTERS)", globals=globals(), number=10_000))

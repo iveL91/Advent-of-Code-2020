@@ -48,6 +48,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # data = data_input("data")
-    # print(timeit.timeit("part_1(data)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(data)", globals=globals(), number=1))
+    # STARTING_NUMBERS = data_input("data")
+    # print(timeit.timeit("part_1(STARTING_NUMBERS)", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2(STARTING_NUMBERS)", globals=globals(), number=1))

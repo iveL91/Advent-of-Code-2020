@@ -143,6 +143,6 @@ if __name__ == "__main__":
     main()
 
     # import timeit
-    # passports = data_input("data")
-    # print(timeit.timeit("part_1(passports)", globals=globals(), number=10_000))
-    # print(timeit.timeit("part_2(passports)", globals=globals(), number=10_000))
+    # PASSPORTS = data_input("data")
+    # print(timeit.timeit("part_1(PASSPORTS)", globals=globals(), number=10_000))
+    # print(timeit.timeit("part_2(PASSPORTS)", globals=globals(), number=10_000))
